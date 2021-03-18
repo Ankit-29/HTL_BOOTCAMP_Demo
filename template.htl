@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--/* Calling the server-side JS script for all view logic that Sightly cannot do */-->
+<html data-sly-use.logic="logic.js">
+
+<head>
+    <!--/* Expressions allow to easily output variables */-->
+    <title>${currentPage.title}</title>
+    <meta charset="utf-8">
+
+    <style>
+        .card {
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>${logic.name}</h1>
+
+    <!-- Operators -->
+    <div data-sly-test="${logic.bool}" style="color:green">
+        <h4>Logical Operators Test</h4>
+    </div>
+
+    <div data-sly-test="${!logic.bool}" style="color:red">
+        <h4>Logical Operators Test</h4>
+    </div>
+
+    <div data-sly-test="${logic.bool && logic.arrayExample.length>0}" style="color:red">
+        <h4>Logical Operators Test</h4>
+    </div>
+
+    <div data-sly-test="${logic.bool || logic.arrayExample.length > 20}" style="color:green">
+        <h4>Logical Operators Test</h4>
+    </div>
+
+    <h4>${logic.isPresenterBoring ? 'Still Don\'t Scroll Insta' : 'Enjoy Session'}</h4>
+
+
+    <!-- String Formatting -->
+    <h4>${'Date = {0}, Day = {1}' @ format=[logic.currentDate, logic.day]}</h4>
+    <h2>${ '#.00' @ format=300}</h2>
+
+    <!-- Array -->
+    <p>${logic.arrayExample}</p>
+    <p>${logic.arrayExample @ join=':'}</p>
+
+
+    <!-- Display Context -->
+    <div>${logic.htmlExample}</div>
+    <div>${logic.htmlExample @ context='html'}</div>
+
+    <div>${logic.invalidUrl}</div>
+    <div>${logic.invalidUrl @ context='uri'}</div>
+
+
+    <!-- URI Manipulation -->
+
+    <a href="${'test' @ extension = 'html'}">${'test' @ extension = 'html'}</a>
+
+    <a href="${'test' @ extension = 'html', selectors='products'}">${'test' @ extension = 'html', selectors='products'}</a>
+
+    <div> ${'path/page.woo.foo.html' @ selectors=['foo', 'bar']}</div>
+
+    <div>
+        ${'path/page.woo.foo.html' @ addSelectors='foo.bar'}
+    </div>
+
+    <a href="${'test' @ extension = 'html', fragment='products'}">${'test' @ extension = 'html', fragment='products'}</a>
+
+    <div>${'http://example.com/path/page.html' @ scheme='https'}</div>
+
+    <div>${'///path/page.html' @ domain='example.org'}</div>
+
+    <div>
+        ${'http://www.example.com/path/page.html' @ domain='www.example.org'}
+    </div>
+
+    <div data-sly-list="${logic.devs}">
+        <div class="card" style="color: ${item.competency == 'AMC' ? 'blue': 'green' @ context='styleToken'}">
+            <h3>${item.name}</h3>
+            <p>${item.competency == 'AMC' ? 'Belongs To AMC': 'Not From AMC'}</p>
+            <a href="${item.profileLink @ context='uri'}">Profile</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
